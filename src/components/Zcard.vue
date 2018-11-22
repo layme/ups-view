@@ -1,13 +1,16 @@
 <template>
-    <el-card shadow="hover" @click="open(url)">
-        <img :src="img" class="image">
-        <div style="padding: 14px; text-align: left">
-            <span>{{ name }}</span>
-            <br/>
-            <span class="desc">{{ desc }}</span>
-        </div>
-        <a :href="url" v-show="false"></a>
-    </el-card>
+    <el-col :span="6">
+        <el-card :body-style="{ padding: '0px' }" style="margin: 10px" shadow="hover" @click="open(url)">
+            <img :src="img" class="image">
+            <div class="bottom">
+                <span>{{ name }}</span>
+                <div>
+                    <span class="desc">{{ desc }}</span>
+                    <a :href="url" v-show="false"></a>
+                </div>
+            </div>
+        </el-card>
+    </el-col>
 </template>
 
 <script>
@@ -28,23 +31,21 @@
 </script>
 
 <style lang="less" scoped>
-    .el-card {
-        padding: 0px;
-        margin: 10px;
-        width: 300px;
-        float: left;
-    }
-
     .desc {
         font-size: 13px;
         color: #999;
         margin-top: 13px;
-        line-height: 12px;
     }
 
     .image {
         width: 100%;
         display: block;
+    }
+
+    .bottom {
+        padding: 14px;
+        line-height: 24px;
+        text-align: left;
     }
 
     .el-card {
