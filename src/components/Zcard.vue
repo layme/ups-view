@@ -1,6 +1,6 @@
 <template>
-    <el-col :span="6">
-        <el-card :body-style="{ padding: '0px' }" style="margin: 10px" shadow="hover" @click="open(url)">
+    <el-col :span="4" @click="open(url)">
+        <el-card :body-style="{ padding: '0px' }" style="margin: 10px" shadow="hover">
             <img :src="img" class="image">
             <div class="bottom">
                 <span>{{ name }}</span>
@@ -24,7 +24,8 @@
         },
         methods: {
             open (url) {
-                window.open(url, '_blank')
+                console.info("open => ", url)
+                window.open(url, '_top')
             }
         }
     }
