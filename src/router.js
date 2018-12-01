@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
@@ -54,3 +54,15 @@ export default new Router({
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    let routeName = to.name
+    window.document.title = (routeName ? routeName + ' - ' : '') + '自如旅居·权限管理系统'
+    if (router.match(to.path)) {
+        next()
+    } else {
+        next('/404')
+    }
+})
+
+export default router
