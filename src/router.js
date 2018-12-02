@@ -18,23 +18,23 @@ let router = new Router({
             }, {
                 path: '/system',
                 name: '系统管理',
-                component: () => import('./views/system')
+                component: () => import('./views/System')
             }, {
                 path: '/menu',
                 name: '菜单管理',
-                component: () => import('./views/menu')
+                component: () => import('./views/Menu')
             }, {
                 path: '/role',
                 name: '角色管理',
-                component: () => import('./views/role')
+                component: () => import('./views/Role')
             }, {
                 path: '/user',
                 name: '用户管理',
-                component: () => import('./views/user')
+                component: () => import('./views/User')
             }, {
                 path: '/log',
                 name: '日志管理',
-                component: () => import('./views/log')
+                component: () => import('./views/Log')
             }]
         }, {
             path: '/login',
