@@ -2,7 +2,7 @@
     <div id="app">
         <el-container>
             <el-header>自如旅居 · 权限管理系统</el-header>
-            <el-container style="height: 1230px">
+            <el-container :style="computedHeight">
                 <el-aside style="width: 200px">
                     <div style="margin: 20px 20px;" size="mini">
                         <el-button icon="el-icon-date" circle @click="$router.push('/home')"></el-button>
@@ -56,9 +56,21 @@
             return {
                 isCollapse: false,
                 isCollapseIcon: 'el-icon-caret-left',
-                asideWidth: 220
+                asideWidth: 220,
+                computedHeight: {
+                    height: '',
+                    'overflow-y': 'auto'
+                }
             }
         },
+        mounted () {
+            this.computedHeight.height = window.innerHeight - 68 + 'px'
+            window.onresize = function () {
+                this.computedHeight.height = window.innerHeight - 68 + 'px'
+            }
+
+        },
+
         methods: {
             handleOpen (key, keyPath) {
                 console.log(key, keyPath)

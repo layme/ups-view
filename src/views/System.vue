@@ -50,7 +50,7 @@
           </el-table>
           <el-pagination class="pagination"
               layout="prev, pager, next"
-              :total="50">
+              :total="total">
           </el-pagination>
       </el-card>
   </div>
@@ -79,7 +79,8 @@
                     name: 'Z-SPACE管理系统',
                     code: 'zspaceBsm'
                 }],
-                systemList: []
+                systemList: [],
+                total: 0
             }
         },
         methods: {
