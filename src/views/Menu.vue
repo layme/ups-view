@@ -150,6 +150,9 @@
       addMenu () {
         console.log('addMenu!')
       },
+      handleNodeClick () {
+        console.log('handleNodeClick!')
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },

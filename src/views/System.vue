@@ -19,7 +19,7 @@
     </el-card>
     <el-card class="box-card">
       <el-row type="flex" class="row-bg" justify="end">
-        <el-col :span="1">
+        <el-col :span="2">
           <el-button icon="el-icon-circle-plus-outline" type="primary" @click="addSystem" plain>添 加</el-button>
         </el-col>
       </el-row>
