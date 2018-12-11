@@ -2,10 +2,10 @@
   <div>
     <el-card class="box-card">
       <el-form :inline="true" :model="formParam" class="demo-form-inline">
-        <el-form-item label="选择系统">
-          <el-select v-model="formParam.systemCode" placeholder="请选择">
+        <el-form-item label="选择应用">
+          <el-select v-model="formParam.applicationCode" placeholder="请选择">
             <el-option
-              v-for="item in systemCodeOptions"
+              v-for="item in applicationOptions"
               :key="item.code"
               :label="item.name"
               :value="item.code">
@@ -13,7 +13,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-search" type="primary" @click="findMenu" plain>查 询</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="findResource" plain>查 询</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -21,7 +21,7 @@
       <el-col :span="8">
         <el-card class="box-card menu-card">
           <div slot="header">
-            <span>菜单树预览</span>
+            <span>资源树预览</span>
           </div>
           <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
         </el-card>
@@ -29,8 +29,10 @@
       <el-col :span="16">
         <el-card class="box-card edit-box">
           <div slot="header">
-            <span>菜单编辑</span>
-            <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px " type="primary" @click="addMenu" plain>新增菜单</el-button>
+            <span>资源编辑</span>
+            <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px "
+                       type="primary" @click="dialogFormVisible = true" plain>新增资源
+            </el-button>
           </div>
           <el-table
             :data="menuDetail"
@@ -76,6 +78,40 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog title="添加资源" :visible.sync="dialogFormVisible" width="30%">
+      <el-form :model="resourceDto" status-icon :rules="rules" ref="resourceForm">
+        <el-form-item prop="appName">
+          <el-input v-model="resourceDto.parentName" placeholder="上级名称 (非必填)"></el-input>
+        </el-form-item>
+        <el-form-item prop="resName">
+          <el-input v-model="resourceDto.resName" placeholder="资源名称 (必填)"></el-input>
+        </el-form-item>
+        <el-form-item prop="resPath">
+          <el-input v-model="resourceDto.resPath" placeholder="资源路径 (必填)"></el-input>
+        </el-form-item>
+        <el-form-item prop="resIcon">
+          <el-input v-model="resourceDto.resIcon" placeholder="资源图标 (非必填)"></el-input>
+        </el-form-item>
+        <el-form-item prop="orderNo">
+          <el-input v-model="resourceDto.orderNo" placeholder="排序 (必填)"></el-input>
+        </el-form-item>
+        <el-form-item prop="resType">
+          <el-select v-model="resourceDto.resType" placeholder="请选择资源类型  (必填)"
+                     style="width: 100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('resourceForm')">保 存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -84,9 +120,9 @@
     data () {
       return {
         formParam: {
-          systemCode: ''
+          applicationCode: ''
         },
-        systemCodeOptions: [{
+        applicationOptions: [{
           name: 'UPS权限管理系统',
           code: 'ups'
         }, {
@@ -140,14 +176,56 @@
           children: 'children',
           label: 'label'
         },
-        menuDetail: []
+        menuDetail: [],
+        total: 0,
+        dialogFormVisible: false,
+        options: [{
+          label: '菜单',
+          value: '1'
+        }, {
+          label: '操作',
+          value: '2'
+        }],
+        resourceDto: {
+          applicationFid: '',
+          parentFid: '',
+          parentName: '',
+          resName: '',
+          resIcon: '',
+          resPath: '',
+          orderNo: '',
+          resType: ''
+        },
+        rules: {
+          resName: [
+            { required: true, message: '请输入资源名称', trigger: 'blur' }
+          ],
+          resPath: [
+            { required: true, message: '请输入资源路径', trigger: 'blur' }
+          ],
+          orderNo: [
+            { required: true, message: '请输入序号', trigger: 'blur' }
+          ],
+          resType: [
+            { required: true, message: '请选择资源类型', trigger: 'blur' }
+          ]
+        }
       }
     },
     methods: {
-      findMenu () {
+      findResource () {
         console.log('findMenu!')
       },
-      addMenu () {
+      submitForm (formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addResource()
+          } else {
+            return false
+          }
+        })
+      },
+      addResource () {
         console.log('addMenu!')
       },
       handleNodeClick () {

@@ -37,7 +37,7 @@
         </el-col>
       </el-row>
       <el-table
-        :data="systemList"
+        :data="roleList"
         stripe
         style="width: 100%">
         <el-table-column

@@ -8,26 +8,21 @@
             <el-button icon="el-icon-date" circle @click="$router.push('/home')"></el-button>
           </div>
           <el-menu router :default-active="defaultActive">
-            <el-menu-item index="/system">
-              <i class="el-icon-menu"></i>
-              <span slot="title">系统管理</span>
-            </el-menu-item>
-            <el-menu-item index="/menu">
-              <i class="el-icon-document"></i>
-              <span slot="title">菜单管理</span>
-            </el-menu-item>
-            <el-menu-item index="/role">
-              <i class="el-icon-setting"></i>
-              <span slot="title">角色管理</span>
-            </el-menu-item>
-            <el-menu-item index="/user">
-              <i class="el-icon-setting"></i>
-              <span slot="title">用户管理</span>
-            </el-menu-item>
-            <el-menu-item index="log">
-              <i class="el-icon-setting"></i>
-              <span slot="title">日志管理</span>
-            </el-menu-item>
+            <div v-for="(x,key0) in resourceList" :key="key0">
+              <el-submenu v-if="x.children !== undefined && x.children.length > 0" :index="x.path">
+                <template slot="title">
+                  <i :class="x.icon"></i>
+                  <span>{{ x.name }}</span>
+                </template>
+                <el-menu-item v-for="(y,key1) in x.children" :key="key1" :index="y.path">
+                  {{ y.name }}
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="x.path">
+                <i :class="x.icon"></i>
+                <span slot="title">{{ x.name }}</span>
+              </el-menu-item>
+            </div>
           </el-menu>
         </el-aside>
 
@@ -47,20 +42,22 @@
 </template>
 
 <script>
-  import axios from '../axios'
+  import instance from '../axios'
+
   export default {
     data () {
       return {
-        defaultActive: '/home',
+        defaultActive: this.$router.currentRoute.path,
         computedHeight: {
           height: '',
           'overflow-y': 'auto'
-        }
+        },
+        resourceList: this.$router.options.routes[0].children.slice(1)
       }
     },
     mounted () {
       this.computedHeight.height = window.innerHeight - 75 + 'px'
-      window.onresize = function () {
+      window.onresize = () => {
         this.computedHeight.height = window.innerHeight - 75 + 'px'
       }
     },
@@ -70,19 +67,15 @@
         let vm = this
         // vm.axios.
       }
+    },
+
+    updated () {
+      this.defaultActive = this.$router.currentRoute.path
     }
   }
 </script>
 
 <style lang="less">
-  /*#app {*/
-  /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
-  /*text-align: center;*/
-  /*color: #2c3e50;*/
-  /*}*/
-
   .el-header, .el-footer {
     background-color: #409EFF;
     color: #fff;
