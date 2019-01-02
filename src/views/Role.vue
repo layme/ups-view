@@ -23,7 +23,9 @@
     <el-card class="box-card">
       <el-row type="flex" class="row-bg" justify="end">
         <el-col :span="2">
-          <el-button icon="el-icon-circle-plus-outline" type="primary" @click="openSaveOrUp()" plain>添 加</el-button>
+          <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px;" type="primary"
+                     @click="openSaveOrUp()" plain>添 加
+          </el-button>
         </el-col>
       </el-row>
       <el-table
@@ -52,18 +54,20 @@
           label="操作">
           <template slot-scope="scope">
             <el-button @click="openSaveOrUp(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button @click="stopOrStartConfirm(scope.$index)" type="text" size="small">{{ scope.row.roleStatus | roleStatusBtnFilter }}</el-button>
+            <el-button @click="stopOrStartConfirm(scope.$index)" type="text" size="small">{{ scope.row.roleStatus |
+              roleStatusBtnFilter }}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination class="pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="formParam.page"
-        :page-sizes="[10, 20]"
-        :page-size="formParam.limit"
-        layout="total, sizes, prev, pager, next"
-        :total="roleTotal">
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page.sync="formParam.page"
+                     :page-sizes="[10, 20]"
+                     :page-size="formParam.limit"
+                     layout="total, sizes, prev, pager, next"
+                     :total="roleTotal">
       </el-pagination>
     </el-card>
     <el-dialog :title="title" :visible.sync="dialogVisible" width="40%">
@@ -80,7 +84,7 @@
           <el-form :model="roleSaveOrUpDto" status-icon :rules="rules" ref="roleForm">
             <el-form-item prop="appCode">
               <el-select v-model="roleSaveOrUpDto.appCode" placeholder="选择应用 (必选)"
-              @change="treeRes" style="width: 100%">
+                         @change="treeRes" style="width: 100%">
                 <el-option
                   v-for="(item,index) in appOptions"
                   :key="index"
@@ -91,7 +95,7 @@
             </el-form-item>
             <el-form-item prop="roleName">
               <el-input v-model.trim="roleSaveOrUpDto.roleName" placeholder="角色名称 (必填 最多10个字)"
-              maxlength="10"></el-input>
+                        maxlength="10"></el-input>
             </el-form-item>
             <el-form-item prop="roleDesc">
               <el-input type="textarea" :row="2" v-model.trim="roleSaveOrUpDto.roleDesc"
@@ -121,6 +125,7 @@
 <script>
   import { instance, catchError } from '../axios'
   import * as utils from '../assets/util'
+
   export default {
     data () {
       return {

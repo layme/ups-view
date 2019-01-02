@@ -15,7 +15,7 @@
 
 <script>
     export default {
-        name: 'Z-card',
+        name: 'ZCard',
         props: {
             img: String,
             name: String,

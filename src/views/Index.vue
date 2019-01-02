@@ -7,23 +7,7 @@
           <div style="margin: 20px 20px;" size="mini">
             <el-button icon="el-icon-date" circle @click="$router.push('/home')"></el-button>
           </div>
-          <el-menu router :default-active="defaultActive">
-            <div v-for="(x,key0) in resourceList" :key="key0">
-              <el-submenu v-if="x.children !== undefined && x.children.length > 0" :index="x.path">
-                <template slot="title">
-                  <i :class="x.icon"></i>
-                  <span>{{ x.name }}</span>
-                </template>
-                <el-menu-item v-for="(y,key1) in x.children" :key="key1" :index="y.path">
-                  {{ y.name }}
-                </el-menu-item>
-              </el-submenu>
-              <el-menu-item v-else :index="x.path">
-                <i :class="x.icon"></i>
-                <span slot="title">{{ x.name }}</span>
-              </el-menu-item>
-            </div>
-          </el-menu>
+          <z-menu :default-active="defaultActive" :resource-list="resourceList" />
         </el-aside>
 
         <el-main>
@@ -42,8 +26,10 @@
 </template>
 
 <script>
+  import ZMenu from '../components/ZMenu'
   import { instance, catchError } from '../axios'
   export default {
+    components: { ZMenu },
     data () {
       return {
         defaultActive: this.$router.currentRoute.path,
@@ -59,6 +45,7 @@
         menuRes: {}
       }
     },
+
     mounted () {
       this.computedHeight.height = window.innerHeight - 75 + 'px'
       window.onresize = () => {

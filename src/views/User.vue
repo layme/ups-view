@@ -16,7 +16,9 @@
     <el-card class="box-card">
       <el-row type="flex" class="row-bg" justify="end">
         <el-col :span="2">
-          <el-button icon="el-icon-circle-plus-outline" type="primary" @click="openSaveOrUp()" plain>添 加</el-button>
+          <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px;" type="primary"
+                     @click="openSaveOrUp()" plain>添 加
+          </el-button>
         </el-col>
       </el-row>
       <el-table
@@ -197,12 +199,14 @@
         let vm = this
         vm.dialogVisible = true
         if (val) {
+          vm.title = '编辑用户'
           vm.userSaveOrUpDto.fid = val.fid
           vm.userSaveOrUpDto.account = val.account
           vm.userSaveOrUpDto.employeeFid = val.employeeFid
           vm.userSaveOrUpDto.empName = val.empName
           vm.userSaveOrUpDto.roleList = val.roleList
         } else {
+          vm.title = '添加用户'
           vm.userSaveOrUpDto = {
             fid: '',
             account: '',
@@ -222,10 +226,9 @@
       },
       handleClose (tag) {
         if (this.$refs.roleSelect) {
-          console.info('handleClose => ', tag)
-          this.$refs.roleSelect.changeSelection(tag)
+          this.$refs.roleSelect.removeSelection(tag)
         }
-        this.userSaveOrUpDto.roleList.splice(this.userSaveOrUpDto.roleList.indexOf(tag), 1)
+        // this.userSaveOrUpDto.roleList.splice(this.userSaveOrUpDto.roleList.indexOf(tag), 1)
       },
       validForm (formName) {
         this.$refs[formName].validate((valid) => {
@@ -261,7 +264,6 @@
           })
       },
       stopOrStartConfirm (val) {
-        console.info('val => ', val)
         let tip = ''
         this.userList[val].userStatus === 1 ? tip = '停用' : tip = '启用'
         this.$confirm('确定' + tip + '吗?', '提示', {

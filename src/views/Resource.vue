@@ -39,8 +39,8 @@
         <el-card class="box-card edit-box">
           <div slot="header">
             <span>资源编辑</span>
-            <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px "
-                       type="primary" @click="openSaveOrUp()" plain>添 加
+            <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px;" type="primary"
+                       @click="openSaveOrUp()" plain>添 加
             </el-button>
           </div>
           <el-table
@@ -74,7 +74,9 @@
               label="操作">
               <template slot-scope="scope">
                 <el-button @click="openSaveOrUp(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button @click="stopOrStartConfirm(scope.$index)" type="text" size="small">{{ scope.row.resStatus | resStatusBtnFilter }}</el-button>
+                <el-button @click="stopOrStartConfirm(scope.$index)" type="text" size="small">{{ scope.row.resStatus |
+                  resStatusBtnFilter }}
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -128,6 +130,7 @@
 <script>
   import { instance, catchError } from '../axios'
   import * as utils from '../assets/util'
+
   export default {
     data () {
       return {
@@ -143,6 +146,7 @@
           label: 'resName'
         },
         resListDto: {
+          appCode: '',
           parentFid: '',
           page: 1,
           limit: 10
@@ -202,14 +206,18 @@
           { params: vm.formParam })
           .then((resp) => {
             if (resp.data.code === 200) {
-              vm.resTree = [(
-                {
-                  id: 1,
-                  resName: '根目录',
-                  resFid: '0',
-                  childrenList: resp.data.body
-                }
-              )]
+              if (resp.data.body.length > 0) {
+                vm.resTree = [(
+                  {
+                    id: 1,
+                    resName: '根目录',
+                    resFid: '0',
+                    childrenList: resp.data.body
+                  }
+                )]
+              } else {
+                vm.resTree = []
+              }
             } else {
               this.$message({
                 message: resp.data.message,
@@ -230,6 +238,7 @@
           return
         }
         vm.resListLoading = true
+        vm.resListDto.appCode = vm.formParam.appCode
         vm.resListDto.parentFid = vm.currentNode.resFid
         instance.get('/api/resource/list',
           { params: vm.resListDto })
@@ -300,11 +309,11 @@
           JSON.stringify(vm.resSaveOrUpDto))
           .then((resp) => {
             if (resp.data.code === 200) {
-                this.$message({
-                  message: '操作成功',
-                  type: 'success'
-                })
-                vm.listRes()
+              this.$message({
+                message: '操作成功',
+                type: 'success'
+              })
+              vm.listRes()
             } else {
               this.$message({
                 message: resp.data.message,
@@ -386,8 +395,8 @@
       }
     },
     created () {
-       utils.listAppOptions().then((data) => {
-         this.appOptions = data
+      utils.listAppOptions().then((data) => {
+        this.appOptions = data
       })
     },
     watch: {

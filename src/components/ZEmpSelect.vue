@@ -56,6 +56,7 @@
 <script>
   import { instance, catchError } from '../axios'
   export default {
+    name: 'ZEmpSelect',
     props: ['selected'],
     data () {
       return {

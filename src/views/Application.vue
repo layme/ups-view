@@ -20,7 +20,8 @@
     <el-card class="box-card">
       <el-row type="flex" class="row-bg" justify="end">
         <el-col :span="2">
-          <el-button icon="el-icon-circle-plus-outline" type="primary" @click="openSaveOrUp(0)" plain>添 加
+          <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px;" type="primary"
+                     @click="openSaveOrUp()" plain>添 加
           </el-button>
         </el-col>
       </el-row>
@@ -73,7 +74,12 @@
           <el-input v-model="appSaveOrUpDto.appCode" placeholder="应用代码 (必填 ziroom 最多10字)" maxlength="10"></el-input>
         </el-form-item>
         <el-form-item prop="appUrl">
-          <el-input v-model="appSaveOrUpDto.appUrl" placeholder="访问地址 (必填 http://www.ziroom.com 最多30字)" maxlength="30"></el-input>
+          <el-input v-model="appSaveOrUpDto.appUrl" placeholder="访问地址 (必填 http://www.ziroom.com 最多30字)"
+                    maxlength="30"></el-input>
+        </el-form-item>
+        <el-form-item prop="appDesc">
+          <el-input v-model="appSaveOrUpDto.appDesc" placeholder="应用描述 (非必填 最多20字)"
+                    maxlength="20"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -114,7 +120,8 @@
           fid: '',
           appName: '',
           appCode: '',
-          appUrl: ''
+          appUrl: '',
+          appDesc: ''
         },
         title: '添加应用',
         rules: {
@@ -158,20 +165,22 @@
       },
       openSaveOrUp (val) {
         this.dialogVisible = true
-        if (val === 0) {
-          this.title = '添加应用'
-          this.appSaveOrUpDto = {
-            fid: '',
-            appName: '',
-            appCode: '',
-            appUrl: ''
-          }
-        } else {
+        if (val) {
           this.title = '修改应用'
           this.appSaveOrUpDto.fid = val.fid
           this.appSaveOrUpDto.appName = val.appName
           this.appSaveOrUpDto.appCode = val.appCode
           this.appSaveOrUpDto.appUrl = val.appUrl
+          this.appSaveOrUpDto.appDesc = val.appDesc
+        } else {
+          this.title = '添加应用'
+          this.appSaveOrUpDto = {
+            fid: '',
+            appName: '',
+            appCode: '',
+            appUrl: '',
+            appDesc: ''
+          }
         }
       },
       validForm (formName) {

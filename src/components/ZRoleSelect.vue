@@ -55,10 +55,11 @@
   import * as utils from '../assets/util'
 
   export default {
+    name: 'ZRoleSelect',
     props: ['selected'],
     data () {
       return {
-        rows: this.selected,
+        rows: JSON.parse(JSON.stringify(this.selected)),
         formParam: {
           appCode: '',
           page: 1,
@@ -114,7 +115,7 @@
         this.$emit('select', select, unSelect)
       },
       toggleSelection () {
-        if (this.rows && this.roleList) {
+        if (this.rows) {
           this.rows.forEach((row) => {
             this.roleList.forEach((role) => {
               if (row.roleFid === role.roleFid) {
@@ -124,8 +125,7 @@
           })
         }
       },
-      changeSelection (val) {
-        console.info('changeSelection => ', val)
+      removeSelection (val) {
         this.roleList.forEach((role) => {
           if (val.roleFid === role.roleFid) {
             this.$refs.roleListTable.toggleRowSelection(role, false)
