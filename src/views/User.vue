@@ -227,8 +227,9 @@
       handleClose (tag) {
         if (this.$refs.roleSelect) {
           this.$refs.roleSelect.removeSelection(tag)
+        } else {
+          this.userSaveOrUpDto.roleList.splice(this.userSaveOrUpDto.roleList.indexOf(tag), 1)
         }
-        // this.userSaveOrUpDto.roleList.splice(this.userSaveOrUpDto.roleList.indexOf(tag), 1)
       },
       validForm (formName) {
         this.$refs[formName].validate((valid) => {
