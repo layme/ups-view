@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { Message } from 'element-ui'
+import { instance, catchError } from '../axios'
 
 Vue.component(Message.name, Message)
 
@@ -92,31 +93,22 @@ export const buildMenu = function (array, ckey) {
 
 // 日期格式化
 export const dateFormat = function (source, ignoreMinute) {
-  let myDate
-  let separate = '-'
-  let minute = ''
-  if (source === void (0)) {
-    source = new Date()
-  }
-  if (source) {
-    if (source.split) {
-      source = source.replace(/\-/g, '/')
-    } else if (isNaN(parseInt(source))) {
-      source = source.toString().replace(/\-/g, '/')
-    } else {
-      source = new Date(source)
-    }
+}
 
-    if (new Date(source) && (new Date(source)).getDate) {
-      myDate = new Date(source)
-      if (!ignoreMinute) {
-        minute = (myDate.getHours() < 10 ? ' 0' : ' ') + myDate.getHours() + ':' + (myDate.getMinutes() < 10 ? '0' : '') + myDate.getMinutes()
+export const listAppOptions = function () {
+  return instance.get('/api/application/options')
+    .then((resp) => {
+      if (resp.data.code === 200) {
+        return resp.data.body
+      } else {
+        this.$message({
+          message: '获取应用下拉框数据失败',
+          type: 'warning'
+        })
+        return []
       }
-      return myDate.getFullYear() + separate + (myDate.getMonth() + 1) + separate + (myDate.getDate() < 10 ? '0' : '') + myDate.getDate() + minute
-    } else {
-      return source.slice(0, 16)
-    }
-  } else {
-    return source
-  }
+    })
+    .catch((err) => {
+      catchError(err)
+    })
 }

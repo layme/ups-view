@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view @login="loginDirect" @logout="logoutDirect"/>
+    <router-view />
   </div>
 </template>
 
@@ -10,25 +10,12 @@
       return {}
     },
     methods: {
-      // 登录
-      loginDirect: function (newPath) {
-        this.signin(() => {
-          this.$router.replace({ path: newPath || '/' })
+      // 顶部消息通知
+      message (type, msg) {
+        this.$message({
+          message: msg,
+          type: type
         })
-      },
-
-      // 退出
-      logoutDirect: function () {
-        // 清除session
-        // util.session('token', '')
-        // 清除请求权限控制
-        // instance.interceptors.request.eject(myInterceptor)
-        // 清除菜单权限
-        // this.$root.hashMenus = {}
-        // 清除请求头token
-        // instance.defaults.headers.common['Authorization'] = ''
-        // 回到登录页
-        this.$router.replace({ path: '/login' })
       }
     }
   }

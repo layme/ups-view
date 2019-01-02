@@ -35,11 +35,6 @@ let router = new Router({
         path: '/user',
         name: '用户管理',
         component: () => import('./views/User')
-      }, {
-        icon: 'el-icon-setting',
-        path: '/log',
-        name: '日志管理',
-        component: () => import('./views/Log')
       }]
     }, {
       path: '/login',

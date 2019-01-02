@@ -42,8 +42,7 @@
 </template>
 
 <script>
-  import instance from '../axios'
-
+  import { instance, catchError } from '../axios'
   export default {
     data () {
       return {
@@ -52,7 +51,12 @@
           height: '',
           'overflow-y': 'auto'
         },
-        resourceList: this.$router.options.routes[0].children.slice(1)
+        resourceList: this.$router.options.routes[0].children.slice(1),
+        menuResDto: {
+          appCode: 'zryms',
+          empCode: '60006896'
+        },
+        menuRes: {}
       }
     },
     mounted () {
@@ -63,12 +67,28 @@
     },
 
     methods: {
-      findMenuList () {
+      findMenuRes () {
         let vm = this
-        // vm.axios.
+        instance.get('/api/resource/menuRes',
+          { params: vm.menuResDto })
+          .then((resp) => {
+            if (resp.data.code === 200) {
+              vm.menuRes = resp.data.body
+            } else {
+              this.$message({
+                message: resp.data.message,
+                type: 'warning'
+              })
+            }
+          })
+          .catch((err) => {
+            catchError(err)
+          })
       }
     },
-
+    created () {
+      this.findMenuRes()
+    },
     updated () {
       this.defaultActive = this.$router.currentRoute.path
     }

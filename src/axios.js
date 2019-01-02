@@ -1,13 +1,9 @@
 import axios from 'axios'
 import Vue from 'vue'
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: 'http://localhost:8000',
   timeout: 3000,
-  headers: {
-    'Access-Control-Allow-Origin': 'true',
-    'Access-Control-Allow-Method': 'OPTIONS,POST,GET,PULL'
-  },
   withCredentials: true
 })
 
@@ -19,7 +15,7 @@ instance.interceptors.response.use(function (response) {
 }, catchError)
 
 // ajax错误处理
-function catchError (error) {
+export function catchError (error) {
   if (error.response) {
     switch (error.response.status) {
       case 400:
@@ -53,5 +49,3 @@ function catchError (error) {
   }
   return Promise.reject(error)
 }
-
-export default instance
