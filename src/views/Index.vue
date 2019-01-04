@@ -17,11 +17,6 @@
         </el-main>
       </el-container>
     </el-container>
-    <!--<div id="nav">-->
-    <!--<router-link to="/">Home</router-link> |-->
-    <!--<router-link to="/about">About</router-link>-->
-    <!--</div>-->
-
   </div>
 </template>
 
@@ -40,7 +35,7 @@
         resourceList: this.$router.options.routes[0].children.slice(1),
         menuResDto: {
           appCode: 'zryms',
-          empCode: '60006896'
+          account: 'renhy'
         },
         menuRes: {}
       }
@@ -61,6 +56,8 @@
           .then((resp) => {
             if (resp.data.code === 200) {
               vm.menuRes = resp.data.body
+              sessionStorage.setItem('menuTree', resp.data.body.menuTree)
+              sessionStorage.setItem('actionList', resp.data.body.actionList)
             } else {
               this.$message({
                 message: resp.data.message,
