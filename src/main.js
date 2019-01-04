@@ -4,14 +4,15 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import { isHave } from './assets/action'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 // 权限指令
-Vue.directive('has', {
+Vue.directive('action', {
   bind: function (el, binding) {
-    if (!Vue.prototype.$_has(binding.value)) {
+    if (isHave(binding.value)) {
       el.parentNode.removeChild(el)
     }
   }

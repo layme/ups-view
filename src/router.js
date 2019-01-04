@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+// let menuList = Vue.prototype.$menuList
+
 let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
