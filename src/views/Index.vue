@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import ZMenu from '../components/ZMenu'
   import { instance, catchError } from '../axios'
   export default {
