@@ -21,7 +21,7 @@
       <el-row type="flex" class="row-bg" justify="end">
         <el-col :span="2">
           <el-button icon="el-icon-circle-plus-outline" style="float: right; padding: 8px;" type="primary"
-                     @click="openSaveOrUp()" v-action="searchBtn" plain>添 加
+                     @click="openSaveOrUp()" plain>添 加
           </el-button>
         </el-col>
       </el-row>

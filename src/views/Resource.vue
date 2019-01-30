@@ -98,18 +98,9 @@
         <el-form-item prop="resName">
           <el-input v-model.trim="resSaveOrUpDto.resName" placeholder="资源名称 (必填 最多8个字)" maxlength="8"></el-input>
         </el-form-item>
-        <el-form-item prop="resPath">
-          <el-input v-model.trim="resSaveOrUpDto.resPath" placeholder="资源路径 (必填 最多20个字)" maxlength="20"></el-input>
-        </el-form-item>
-        <el-form-item prop="resIcon">
-          <el-input v-model.trim="resSaveOrUpDto.resIcon" placeholder="资源图标 (非必填 最多15个字)" maxlength="15"></el-input>
-        </el-form-item>
-        <el-form-item prop="orderNo">
-          <el-input v-model.number.trim="resSaveOrUpDto.orderNo" placeholder="排序 (必填)" maxlength="2"></el-input>
-        </el-form-item>
         <el-form-item prop="resType">
           <el-select v-model="resSaveOrUpDto.resType" placeholder="请选择资源类型  (必填)"
-                     style="width: 100%">
+                     style="width: 100%" @change="resTypeChange">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -117,6 +108,33 @@
               :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>
+        <div v-if="isView">
+          <el-row :gutter="10">
+            <el-col :span="12">
+              <el-form-item prop="resPath">
+                <el-input v-model.trim="resSaveOrUpDto.resPath" placeholder="资源访问路径 (必填 最多20个字)"
+                          maxlength="20"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="resPosition">
+                <el-input v-model.trim="resSaveOrUpDto.resPosition" placeholder="资源存储路径 (必填 最多20个字)"
+                          maxlength="20"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else>
+          <el-form-item prop="resPath">
+            <el-input v-model.trim="resSaveOrUpDto.resPath" placeholder="资源路径 (必填 最多20个字)" maxlength="20"></el-input>
+          </el-form-item>
+        </div>
+        <el-form-item prop="resIcon">
+          <el-input v-model.trim="resSaveOrUpDto.resIcon" placeholder="资源图标 (非必填 最多15个字)" maxlength="15"></el-input>
+        </el-form-item>
+        <el-form-item prop="orderNo">
+          <el-input v-model.number.trim="resSaveOrUpDto.orderNo" placeholder="排序 (必填)" maxlength="2"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -160,9 +178,13 @@
           label: '菜单',
           value: 1
         }, {
-          label: '操作',
+          label: '页面',
           value: 2
+        }, {
+          label: '操作',
+          value: 3
         }],
+        isView: false,
         resSaveOrUpDto: {
           fid: '',
           appCode: '',
@@ -171,6 +193,7 @@
           resName: '',
           resIcon: '',
           resPath: '',
+          resPosition: '',
           orderNo: '',
           resType: ''
         },
@@ -179,6 +202,9 @@
             { required: true, message: '请输入资源名称', trigger: 'blur' }
           ],
           resPath: [
+            { required: true, message: '请输入资源路径', trigger: 'blur' }
+          ],
+          resPosition: [
             { required: true, message: '请输入资源路径', trigger: 'blur' }
           ],
           orderNo: [
@@ -199,6 +225,7 @@
       //
       treeRes () {
         let vm = this
+        vm.currentNode = null
         vm.resList = []
         vm.resTotal = 0
         vm.treeLoading = true
@@ -266,6 +293,7 @@
       openSaveOrUp (val) {
         let vm = this
         vm.dialogVisible = true
+        vm.resetForm('resForm')
         if (val) {
           vm.title = '修改资源'
           vm.resSaveOrUpDto.fid = val.fid
@@ -275,23 +303,29 @@
           vm.resSaveOrUpDto.resName = val.resName
           vm.resSaveOrUpDto.resIcon = val.resIcon
           vm.resSaveOrUpDto.resPath = val.resPath
+          vm.resSaveOrUpDto.resPosition = val.resPosition
           vm.resSaveOrUpDto.orderNo = val.orderNo
           vm.resSaveOrUpDto.resType = val.resType
+          vm.isView = val.resType === 2
         } else {
           vm.title = '添加资源'
-          vm.resSaveOrUpDto = {
-            fid: '',
-            appCode: vm.formParam.appCode,
-            parentFid: vm.currentNode.resFid,
-            parentName: vm.currentNode.resName,
-            resName: '',
-            resIcon: '',
-            resPath: '',
-            orderNo: '',
-            resType: ''
-          }
+          vm.resSaveOrUpDto.appCode = vm.formParam.appCode
+          vm.resSaveOrUpDto.parentFid = vm.currentNode.resFid
+          vm.resSaveOrUpDto.parentName = vm.currentNode.resName
         }
       },
+
+      resTypeChange (val) {
+        this.isView = val === 2
+      },
+
+      // 重置表单域
+      resetForm (formName) {
+        if (this.$refs[formName]) {
+          this.$refs[formName].resetFields()
+        }
+      },
+
       validForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -390,6 +424,8 @@
           case 1:
             return '菜单'
           case 2:
+            return '页面'
+          case 3:
             return '操作'
         }
       }

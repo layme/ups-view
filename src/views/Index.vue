@@ -34,7 +34,7 @@
         },
         resourceList: this.$router.options.routes[0].children.slice(1),
         menuResDto: {
-          appCode: 'zryms',
+          appCode: 'ups',
           account: 'renhy'
         },
         menuRes: {}
@@ -68,25 +68,10 @@
           .catch((err) => {
             catchError(err)
           })
-      },
-      reConnection () {
-        let timesRun = 0
-        let interval = setInterval(() => {
-          timesRun += 1
-          if (timesRun === 3) {
-            clearInterval(interval)
-          }
-          console.info('1234123r')
-          this.$message({
-            message: 'connection closed，fresh the page',
-            type: 'info'
-          })
-        }, 2000)
       }
     },
     created () {
       this.findMenuRes()
-      this.reConnection()
     },
     updated () {
       this.defaultActive = this.$router.currentRoute.path
